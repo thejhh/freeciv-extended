@@ -884,6 +884,9 @@ const char *get_info_label_text(bool moreinfo)
     astr_add_line(&str, _("Gold: %d (%+d)"),
                   client.conn.playing->economic.gold,
                   player_get_expected_income(client.conn.playing));
+    astr_add_line(&str, _("Production: %d (%+d)"),
+                  player_get_total_production(client.conn.playing),
+                  player_get_expected_production(client.conn.playing));
     astr_add_line(&str, _("Tax: %d Lux: %d Sci: %d"),
                   client.conn.playing->economic.tax,
                   client.conn.playing->economic.luxury,
