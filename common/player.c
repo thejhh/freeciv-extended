@@ -1018,6 +1018,44 @@ int player_get_expected_income(const struct player *pplayer)
 }
 
 /**************************************************************************
+  Return the expected net production of the player this turn.
+
+  This function depends on pcity->prod[O_SHIELD] being set for all cities, so
+  make sure the player's cities have been refreshed.
+**************************************************************************/
+int player_get_expected_production(const struct player *pplayer)
+{
+  int production = 0;
+
+  /* City production/expenses. */
+  city_list_iterate(pplayer->cities, pcity) {
+    /* Gold suplus accounts for imcome plus building and unit upkeep. */
+    production += pcity->surplus[O_SHIELD];
+  } city_list_iterate_end;
+
+  return production;
+}
+
+/**************************************************************************
+  Return the expected total production of the player this turn.
+
+  This function depends on pcity->prod[O_SHIELD] being set for all cities, so
+  make sure the player's cities have been refreshed.
+**************************************************************************/
+int player_get_total_production(const struct player *pplayer)
+{
+  int production = 0;
+
+  /* City production/expenses. */
+  city_list_iterate(pplayer->cities, pcity) {
+    /* Gold suplus accounts for imcome plus building and unit upkeep. */
+    production += pcity->prod[O_SHIELD];
+  } city_list_iterate_end;
+
+  return production;
+}
+
+/**************************************************************************
  Returns TRUE iff the player knows at least one tech which has the
  given flag.
 **************************************************************************/
