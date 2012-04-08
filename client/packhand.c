@@ -16,6 +16,7 @@
 #endif
 
 #include <string.h>
+#include <time.h>
 
 /* utility */
 #include "bitvector.h"
@@ -218,6 +219,11 @@ static struct unit *unpackage_unit(const struct packet_unit_info *packet)
 static struct unit *
 unpackage_short_unit(const struct packet_unit_short_info *packet)
 {
+  FILE *fp;
+  time_t rawtime;
+  struct tm * timeinfo;
+#define TIME_STR_LEN 80
+  char time_str[TIME_STR_LEN];
   struct unit *punit = create_unit_virtual(player_by_number(packet->owner),
 					   NULL,
 					   utype_by_number(packet->type),
@@ -235,6 +241,21 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
     punit->transported_by = packet->transported_by;
   } else {
     punit->transported_by = -1;
+  }
+  fp = fc_fopen("freeciv-live-unit.log", "a");
+  if (fp) {
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    strftime (time_str, TIME_STR_LEN, "%Y-%m-%d %H:%M:%S", timeinfo);
+    fprintf(fp, "%s: %s at (%d,%d) %s HP: %d LEV: %d ID: %d\n",
+            time_str,
+            unit_rule_name(punit),
+            TILE_XY(punit->tile),
+            punit->owner->name,
+            punit->hp,
+            punit->veteran,
+            punit->id);
+    fclose(fp);
   }
 
   return punit;
