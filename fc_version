@@ -1,0 +1,36 @@
+#/bin/sh
+#
+#  Copyright (C) 2004-2008 Freeciv team
+
+# Version definition for Freeciv.
+
+MAJOR_VERSION="2"
+MINOR_VERSION="3"
+PATCH_VERSION="2"
+VERSION_LABEL=""
+
+IS_DEVEL_VERSION=0
+IS_BETA_VERSION=0
+
+NEXT_STABLE_VERSION="2.4.0"
+RELEASE_MONTH=8
+
+DATASUBDIR=2.3
+
+# Freeciv network capstring: see documentation in common/capstr.c
+#
+# +Freeciv.Devel.YYYY.MMM.DD is the base capability string.
+#
+#   - No new mandatory capabilities can be added to the release branch; doing
+#     so would break network capability of supposedly "compatible" releases.
+#
+#   - Avoid adding a new mandatory capability to the development branch for
+#     as long as possible.  We want to maintain network compatibility with
+#     the stable branch for as long as possible.
+NETWORK_CAPSTRING_MANDATORY="+Freeciv-2.3-network"
+NETWORK_CAPSTRING_OPTIONAL="timeout_extended_range eg_report_size"
+
+if test x$VERSION_SCRIPT_SILENT != xyes ; then
+  VERSION=${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}${VERSION_LABEL}
+  echo ${VERSION}
+fi

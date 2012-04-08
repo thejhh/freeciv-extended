@@ -1,0 +1,93 @@
+----------------------------------------------------------------------
+                   Experimental Freeciv Ruleset
+----------------------------------------------------------------------
+
+This ruleset tries to use the new features available since freeciv 2.2. It
+is based on the default ruleset. The changes can be extracted by
+
+#> diff -ur data/default/ data/experimental/
+
+If the changes in this ruleset result in a working game (especially with
+regard to the AI) they could be included in the default ruleset for next
+major release.
+
+If you change the experimental ruleset, please include a short comment in
+this file.
+
+
+
+1. Changes compared to the default ruleset
+   ---------------------------------------
+
+- Plagues are activated. Temples, Aqueducts, Sewer Systems reduce the
+  chance of plague in a city, as do the new Hospital and Genetic Laboratory
+  buildings. The effect of Aqueducts is reduced after Industrialization
+  is discovered. Building the wonder 'Cure for Cancer' further reduces
+  the possibility of plague for your entire empire.
+
+- The Genetic Laboratory increases the food output by 25% if the city
+  size exceeds 20.
+
+- Migration is activated and locked by the ruleset. Migration effects for
+  the different governments are defined; cities belonging to more
+  representative governments are more attractive for cross-border migration.
+
+- After The Corporation is researched, the upkeep for most modern military
+  units (Riflemen onwards) is changed from shields to gold, and cities
+  no longer maintain any such units for free, regardless of government.
+  Gold upkeep for units is tallied empire-wide (unlike buildings), and if
+  funds run out, random units are disbanded.
+
+- A new unit class Big Land is introduced, comprising all "siege" units
+  (Catapult, Cannon etc) and Freight. Units of this type are restricted
+  to flat terrain and cannot move into difficult terrain such as hills
+  and forest, unless roads are built.
+
+- Triremes can move on rivers (but later ships cannot).
+
+- Activate variable city radii:
+    radius 1 (radius_sq =  2): start
+    radius 2 (radius_sq =  5): city size 3
+    radius 3 (radius_sq = 10): city size 10 + Railroad
+    radius 4 (radius_sq = 17): city size 30 + Railroad + Mass Transit +
+                               Super Highway
+  The vision range of the city is adapted accordingly.
+
+- The number of build slots for units is increased at radius 3 and 4.
+
+- (Add and) Activate tech upkeep. Beyond a certain technology level, some
+  bulbs are required to maintain your civilization's existing knowledge,
+  and if not supplied, some techs may be lost. (However, technology is not
+  lost in this way during periods of Anarchy.)
+
+- Activate server setting 'foggedborders': your view of foreign borders is
+  not updated if you can't currently see the territory.
+
+- Activated 'techlost_recv' and 'techlost_donor': whenever technologies are
+  transferred between civilizations, there is a small chance that each of
+  the parties will forget the technology in question.
+
+
+
+2. Use the new ruleset
+   -------------------
+
+To play a game with the experimental rules, start the server with:
+       ./ser -r data/experimental.serv
+or a single player game with
+       ./freeciv-gtk2 -r data/experimental.serv
+(and any other command-line arguments you normally use; depending on
+how you have Freeciv installed you may have to give the installed
+data directory path instead of "data")
+
+Start the client normally.  The client must be network-compatible
+(usually meaning the same or similar version) but otherwise nothing
+special is needed.  (However some third-party rulesets may
+potentially require special graphics to work properly, in which case
+the client should have those graphics available and be started with
+an appropriate '--tiles' argument.)
+
+Note that the Freeciv AI might not play as well with rules other
+than standard Freeciv.  The AI is supposed to understand and
+utilize all sane rules variations, so please report any AI
+failures so that they can be fixed.
