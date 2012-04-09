@@ -15,8 +15,12 @@
 #ifndef FC__MYSQL_LOG_H
 #define FC__MYSQL_LOG_H
 
-void fc_mysql_log_unit(const struct unit* punit, bool removed=false);
-void fc_mysql_log_city(const struct city* pcity, bool removed=false);
-void fc_mysql_log_nuke(const struct tile* ptile);
+#include "fc_types.h"		/* struct connection, struct government */
+#include "events.h"		/* enum event_type */
+#include "map.h"
+
+extern void fc_mysql_log_unit(const struct unit* punit, bool removed=false);
+extern void fc_mysql_log_city(const struct city* pcity, bool removed=false);
+extern void fc_mysql_log_nuke(const struct tile* ptile);
 
 #endif /* FC__MYSQL_LOG_H */
