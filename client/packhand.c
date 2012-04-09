@@ -240,7 +240,7 @@ void client_mysql_insert(char *query_fmt, ...) {
 				break;
 			}
 
-			*query_p = "'";
+			*query_p = '\'';
 			query_p++;
 			query_n++;
 
@@ -250,7 +250,7 @@ void client_mysql_insert(char *query_fmt, ...) {
 				query_n += res;
 			}
 
-			*query_p = "'";
+			*query_p = '\'';
 			query_p++;
 			query_n++;
 
