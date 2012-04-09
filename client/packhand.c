@@ -97,8 +97,8 @@
 #include "packhand.h"
 
 #ifdef HAVE_CLIENT_MYSQL
-  #define CLIENT_MYSQL_UNIT_TABLE    "unit"
-  #define CLIENT_MYSQL_LOG_TABLE     "log"
+  #define CLIENT_MYSQL_UNIT_TABLE    "freeciv_client_unit"
+  #define CLIENT_MYSQL_LOG_TABLE     "freeciv_client_log"
 #endif /* HAVE_CLIENT_MYSQL */
 
 static void city_packet_common(struct city *pcity, struct tile *pcenter,
