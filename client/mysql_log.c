@@ -105,8 +105,8 @@
 CREATE TABLE `fc_log` (
     log_id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
-    x                INT UNSIGNED,
-    y                INT UNSIGNED,
+    x                INT,
+    y                INT,
     msg              VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY(log_id)) CHARACTER SET utf8 ENGINE=InnoDB;
 
@@ -114,22 +114,22 @@ CREATE TABLE `fc_unitlog` (
     unitlog_id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
     unit_name        VARCHAR(255),
-    tile_x           INT UNSIGNED,
-    tile_y           INT UNSIGNED,
+    tile_x           INT,
+    tile_y           INT,
     owner_name      VARCHAR(255),
-    unit_hp          INT UNSIGNED,
-    unit_veteran     INT UNSIGNED,
-    unit_id          INT UNSIGNED,
+    unit_hp          INT,
+    unit_veteran     INT,
+    unit_id          INT,
     removed          BOOL NOT NULL DEFAULT 0,
     PRIMARY KEY(unitlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
 
 CREATE TABLE `fc_citylog` (
     citylog_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
-    city_id          INT UNSIGNED,
+    city_id          INT,
     city_name        VARCHAR(255),
-    tile_x           INT UNSIGNED,
-    tile_y           INT UNSIGNED,
+    tile_x           INT,
+    tile_y           INT,
     owner_name       VARCHAR(255),
     city_size             INT,
     city_food_stock       INT,
@@ -140,9 +140,34 @@ CREATE TABLE `fc_citylog` (
 CREATE TABLE `fc_nukelog` (
     nukelog_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
-    tile_x           INT UNSIGNED,
-    tile_y           INT UNSIGNED,
+    tile_x           INT,
+    tile_y           INT,
     PRIMARY KEY(nukelog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
+CREATE TABLE `fc_combatlog` (
+    combatlog_id     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    created          TIMESTAMP NOT NULL DEFAULT 0,
+    tile_x           INT,
+    tile_y           INT,
+    attacker_unit_id           INT,
+    defender_unit_id           INT,
+    PRIMARY KEY(combatlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
+CREATE TABLE `fc_tclog` (
+    tclog_id     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    created      TIMESTAMP NOT NULL DEFAULT 0,
+    year         INT,
+    turn         INT,
+    PRIMARY KEY(tclog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
+CREATE TABLE `fc_chatlog` (
+    chatlog_id       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    created          TIMESTAMP NOT NULL DEFAULT 0,
+    tile_x           INT,
+    tile_y           INT,
+    message          VARCHAR(255),
+    event            VARCHAR(255),
+    PRIMARY KEY(chatlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
 
 ************************************************************************/
 
