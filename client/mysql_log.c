@@ -146,26 +146,39 @@ CREATE TABLE `fc_nukelog` (
 
 ************************************************************************/
 
-void fc_mysql_log_unit(const struct unit* punit, bool removed) {
+void fc_mysql_log_unit(const struct unit* punit) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_UNITLOG_TABLE "` "
-	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id,removed) "
-	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d,%d)",
+	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id) "
+	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
             punit->owner->name,
             punit->hp,
             punit->veteran,
-            punit->id,
-	    (removed ? 1 : 0)
+            punit->id
 	);
 }
 
-void fc_mysql_log_city(const struct city* pcity, bool removed) {
+void fc_mysql_log_unit_removed(const struct unit* punit) {
+    fc_mysql_query(
+	"INSERT INTO `" FC__MYSQL_UNITLOG_TABLE "` "
+	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id,removed) "
+	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d,1)",
+            unit_rule_name(punit),
+            TILE_XY(punit->tile),
+            punit->owner->name,
+            punit->hp,
+            punit->veteran,
+            punit->id
+	);
+}
+
+void fc_mysql_log_city(const struct city* pcity) {
   fc_mysql_query(
         "INSERT INTO `" FC__MYSQL_CITYLOG_TABLE "` "
         "(created,city_id,city_name,tile_x,tile_y,owner_name,city_size,removed,city_food_stock,city_shield_stock) "
-        "VALUES (NOW(),%d,%d,%d,%s,%d,1,%d,%d)",
+        "VALUES (NOW(),%d,%s,%d,%d,%s,%d,%d,%d)",
             pcity->id,
             pcity->name,
             TILE_XY(pcity->tile),
@@ -174,6 +187,21 @@ void fc_mysql_log_city(const struct city* pcity, bool removed) {
             pcity->food_stock,
             pcity->shield_stock,
 	    (removed ? 1 : 0)
+	);
+}
+
+void fc_mysql_log_city_removed(const struct city* pcity) {
+  fc_mysql_query(
+        "INSERT INTO `" FC__MYSQL_CITYLOG_TABLE "` "
+        "(created,city_id,city_name,tile_x,tile_y,owner_name,city_size,city_food_stock,city_shield_stock) "
+        "VALUES (NOW(),%d,%s,%d,%d,%s,%d,%d,%d,1)",
+            pcity->id,
+            pcity->name,
+            TILE_XY(pcity->tile),
+            pcity->owner->name,
+            pcity->size,
+            pcity->food_stock,
+            pcity->shield_stock
 	);
 }
 
