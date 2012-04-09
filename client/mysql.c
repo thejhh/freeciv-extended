@@ -113,11 +113,12 @@
 static MYSQL* fc_mysql_connect() {
 	static bool initilized = false;
 	static MYSQL mysql;
+	my_bool my_true = true;
 	if(initilized) return (mysql_ping(&mysql) == 0) ? &mysql : NULL;
 	initilized = true;
 	mysql_init(&mysql);
 	mysql_options(&mysql, MYSQL_READ_DEFAULT_GROUP, "freeciv_client");
-	mysql_options(&mysql, MYSQL_OPT_RECONNECT, true);
+	mysql_options(&mysql, MYSQL_OPT_RECONNECT, &my_true);
 	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0);
 }
 #endif /* HAVE_CLIENT_MYSQL */
