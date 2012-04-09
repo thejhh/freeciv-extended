@@ -98,7 +98,7 @@
 
 #ifdef HAVE_CLIENT_MYSQL
   #define CLIENT_MYSQL_LOG_TABLE     "freeciv_client_log"
-  #define CLIENT_MYSQL_UNITLOG_TABLE "freeciv_client_log"
+  #define CLIENT_MYSQL_UNITLOG_TABLE "freeciv_client_unitlog"
 
 /***********************************************************************
 
@@ -113,14 +113,15 @@ CREATE TABLE `freeciv_client_log` (
 CREATE TABLE `freeciv_client_unitlog` (
     unitlog_id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
-    x                INT UNSIGNED,
-    y                INT UNSIGNED,
-    type             VARCHAR(255),
-    nation           VARCHAR(255),
-    hp               INT UNSIGNED,
-    lev              INT UNSIGNED,
+    unit_name        VARCHAR(255),
+    unit_x           INT UNSIGNED,
+    unit_y           INT UNSIGNED,
+    player_name      VARCHAR(255),
+    unit_hp          INT UNSIGNED,
+    unit_veteran     INT UNSIGNED,
     unit_id          INT UNSIGNED,
     PRIMARY KEY(unitlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
 
 ************************************************************************/
 
@@ -476,8 +477,8 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
             punit->id);
     client_mysql_insert(
 	"INSERT INTO `" CLIENT_MYSQL_UNITLOG_TABLE "` "
-	"(created,unit_rule_name,x,y,owner_name,hp,veteran,unit_id) "
-	"VALUES (unix_timestamp(),%s,%d,%d,%d,%s,%d,%d,%d)",
+	"(created,unit_name,unit_x,unit_y,player_name,unit_hp,unit_veteran,unit_id) "
+	"VALUES (unix_timestamp(),%s,%d,%d,%s,%d,%d,%d)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
             punit->owner->name,
