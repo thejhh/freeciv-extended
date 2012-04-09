@@ -19,8 +19,13 @@
 #include "events.h"		/* enum event_type */
 #include "map.h"
 
-extern void fc_mysql_log_unit(const struct unit* punit, bool removed);
-extern void fc_mysql_log_city(const struct city* pcity, bool removed);
-extern void fc_mysql_log_nuke(const struct tile* ptile);
+void fc_mysql_log_unit(const struct unit* punit);
+void fc_mysql_log_city(const struct city* pcity);
+void fc_mysql_log_unit_remove(const struct unit* punit);
+void fc_mysql_log_city_remove(const struct city* pcity);
+void fc_mysql_log_nuke(const struct tile* ptile);
+void fc_mysql_log_combat(const struct unit* punit0, const struct unit* punit1);
+void fc_mysql_log_tc(int year, int turn);
+void fc_mysql_log_chat(const char *message, const struct tile* tile, enum event_type event, int conn_id);
 
 #endif /* FC__MYSQL_LOG_H */

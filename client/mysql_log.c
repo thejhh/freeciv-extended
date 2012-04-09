@@ -146,7 +146,7 @@ CREATE TABLE `fc_nukelog` (
 
 ************************************************************************/
 
-void fc_mysql_log_unit(const struct unit* punit, bool removed=false) {
+void fc_mysql_log_unit(const struct unit* punit, bool removed) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_UNITLOG_TABLE "` "
 	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id,removed) "
@@ -161,7 +161,7 @@ void fc_mysql_log_unit(const struct unit* punit, bool removed=false) {
 	);
 }
 
-void fc_mysql_log_city(const struct city* pcity, bool removed=false) {
+void fc_mysql_log_city(const struct city* pcity, bool removed) {
   fc_mysql_query(
         "INSERT INTO `" FC__MYSQL_CITYLOG_TABLE "` "
         "(created,city_id,city_name,tile_x,tile_y,owner_name,city_size,removed,city_food_stock,city_shield_stock) "
