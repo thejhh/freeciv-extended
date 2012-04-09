@@ -121,7 +121,7 @@ static char *alloc_escaped_string(MYSQL *mysql, const char *orig);
 static void free_escaped_string(char *str);
 #endif /* HAVE_CLIENT_MYSQL */
 
-static void client_mysql_insert_log(char *str);
+void client_mysql_insert_log(char *msgfmt, ...);
 
 /****************************************************************************
   Connect to MySQL server JIT-style and reuse connection
@@ -142,7 +142,7 @@ static MYSQL* client_mysql_connect() {
 /****************************************************************************
   Insert log row to MySQL table
 ****************************************************************************/
-static void client_mysql_insert_log(char *msgfmt, ...) {
+void client_mysql_insert_log(char *msgfmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
 	MYSQL *mysql = client_mysql_connect();
 	char unescaped_buffer[512] = "";
