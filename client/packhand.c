@@ -135,7 +135,7 @@ static MYSQL* client_mysql_connect() {
 	initilized = true;
 	mysql_init(&mysql);
 	mysql_options(&mysql, MYSQL_READ_DEFAULT_GROUP, "freeciv_client");
-	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0) === NULL);
+	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0);
 }
 #endif /* HAVE_CLIENT_MYSQL */
 
