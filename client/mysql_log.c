@@ -185,8 +185,7 @@ void fc_mysql_log_city(const struct city* pcity) {
             pcity->owner->name,
             pcity->size,
             pcity->food_stock,
-            pcity->shield_stock,
-	    (removed ? 1 : 0)
+            pcity->shield_stock
 	);
 }
 
