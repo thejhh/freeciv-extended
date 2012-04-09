@@ -149,8 +149,8 @@ CREATE TABLE `fc_nukelog` (
 void fc_mysql_log_unit(const struct unit* punit) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_UNITLOG_TABLE "` "
-	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id) "
-	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d)",
+	"("        "created," "unit_name," "tile_x," "tile_y," "owner_name," "unit_hp," "unit_veteran," "unit_id) "
+	"VALUES (" "NOW(),"   "%s,"        "%d,"     "%d,"     "%s,"         "%d,"      "%d,"           "%d)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
             punit->owner->name,
@@ -163,8 +163,8 @@ void fc_mysql_log_unit(const struct unit* punit) {
 void fc_mysql_log_unit_removed(const struct unit* punit) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_UNITLOG_TABLE "` "
-	"(created,unit_name,unit_x,unit_y,owner_name,unit_hp,unit_veteran,unit_id,removed) "
-	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d,1)",
+	"("        "created," "unit_name," "tile_x," "tile_y," "owner_name," "unit_hp," "unit_veteran," "unit_id," "removed) "
+	"VALUES (" "NOW(),"   "%s,"        "%d,"     "%d,"     "%s,"         "%d,"      "%d,"           "%d,"      "1)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
             punit->owner->name,
@@ -177,8 +177,8 @@ void fc_mysql_log_unit_removed(const struct unit* punit) {
 void fc_mysql_log_city(const struct city* pcity) {
   fc_mysql_query(
         "INSERT INTO `" FC__MYSQL_CITYLOG_TABLE "` "
-        "(created,city_id,city_name,tile_x,tile_y,owner_name,city_size,removed,city_food_stock,city_shield_stock) "
-        "VALUES (NOW(),%d,%s,%d,%d,%s,%d,%d,%d)",
+        "("        "created," "city_id," "city_name," "tile_x," "tile_y," "owner_name," "city_size," "city_food_stock," "city_shield_stock) "
+        "VALUES (" "NOW(),"   "%d,"      "%s,"        "%d,"     "%d,"     "%s,"         "%d,"        "%d,"              "%d)",
             pcity->id,
             pcity->name,
             TILE_XY(pcity->tile),
@@ -192,8 +192,8 @@ void fc_mysql_log_city(const struct city* pcity) {
 void fc_mysql_log_city_removed(const struct city* pcity) {
   fc_mysql_query(
         "INSERT INTO `" FC__MYSQL_CITYLOG_TABLE "` "
-        "(created,city_id,city_name,tile_x,tile_y,owner_name,city_size,city_food_stock,city_shield_stock) "
-        "VALUES (NOW(),%d,%s,%d,%d,%s,%d,%d,%d,1)",
+        "("        "created," "city_id," "city_name," "tile_x," "tile_y," "owner_name," "city_size," "city_food_stock," "city_shield_stock," "removed) "
+        "VALUES (" "NOW(),"   "%d,"      "%s,"        "%d,"     "%d,"     "%s,"         "%d,"        "%d,"              "%d,"                "1)",
             pcity->id,
             pcity->name,
             TILE_XY(pcity->tile),
@@ -207,8 +207,8 @@ void fc_mysql_log_city_removed(const struct city* pcity) {
 void fc_mysql_log_nuke(const struct tile* ptile) {
 	fc_mysql_query(
 	        "INSERT INTO `" FC__MYSQL_NUKELOG_TABLE "` "
-	        "(created,tile_x,tile_y) "
-	        "VALUES (NOW(),%d,%d)",
+	        "("        "created," "tile_x," "tile_y) "
+	        "VALUES (" "NOW(),"   "%d,"     "%d)",
 	            TILE_XY(ptile)
 		);
 }
@@ -216,8 +216,8 @@ void fc_mysql_log_nuke(const struct tile* ptile) {
 void fc_mysql_log_combat(const struct unit* punit0, const struct unit* punit1) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_COMBATLOG_TABLE "` "
-	"(created,tile_x,tile_y,attacker_unit_id,defender_unit_id) "
-	"VALUES (NOW(),%d,%d,%d,%d)",
+	"("        "created," "tile_x," "tile_y," "attacker_unit_id," "defender_unit_id) "
+	"VALUES (" "NOW(),"   "%d,"     "%d,"     "%d,"               "%d)",
             TILE_XY(punit1->tile),
             punit0->id,
             punit1->id
@@ -229,8 +229,8 @@ void fc_mysql_log_combat(const struct unit* punit0, const struct unit* punit1) {
 void fc_mysql_log_tc(int year, int turn) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_TCLOG_TABLE "` "
-	"(created,year,turn) "
-	"VALUES (NOW(),%d,%d)",
+	"("        "created," "year," "turn) "
+	"VALUES (" "NOW(),"   "%d,"   "%d)",
 		year,
 		turn
 	);
@@ -239,8 +239,8 @@ void fc_mysql_log_tc(int year, int turn) {
 void fc_mysql_log_chat(const char *message, const struct tile* ptile, enum event_type event, int conn_id) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_CHATLOG_TABLE "` "
-	"(created,tile_x,tile_y,message,event) "
-	"VALUES (NOW(),%d,%d,%s,%s)",
+	"("        "created," "tile_x," "tile_y," "message," "event) "
+	"VALUES (" "NOW(),"   "%d,"     "%d,"     "%s,"      "%s)",
 		TILE_XY(ptile),
 		message,
 		get_event_message_text(event)
