@@ -179,6 +179,7 @@ void client_mysql_insert(char *query_fmt, ...) {
 	int query_n = 0;
 	int buffer_result = 0;
 	bool error = false;
+	va_list ap;
 
 	/*
 	char unescaped_buffer[512] = "";
@@ -187,7 +188,6 @@ void client_mysql_insert(char *query_fmt, ...) {
 	char query_buffer[512] = "";
 	const int query_buffer_size = sizeof(query_buffer);
 	int query_buffer_result = 0;
-	va_list ap;
 	char* escaped_buffer;
 	*/
 
