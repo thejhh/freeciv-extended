@@ -15,8 +15,17 @@
 #include <config.h>
 #endif
 
+// FIXME: Add this to config.h
+#ifndef HAVE_CLIENT_MYSQL
+  #define HAVE_CLIENT_MYSQL 1
+#endif
+
 #include <string.h>
 #include <time.h>
+
+#ifdef HAVE_CLIENT_MYSQL
+  #include <mysql/mysql.h>
+#endif /* HAVE_CLIENT_MYSQL */
 
 /* utility */
 #include "bitvector.h"
@@ -87,12 +96,16 @@
 
 #include "packhand.h"
 
+#ifdef HAVE_CLIENT_MYSQL
+  #define CLIENT_MYSQL_UNIT_TABLE    "unit"
+  #define CLIENT_MYSQL_LOG_TABLE     "log"
+#endif /* HAVE_CLIENT_MYSQL */
+
 static void city_packet_common(struct city *pcity, struct tile *pcenter,
                                struct player *powner,
                                struct tile_list *worked_tiles,
                                bool is_new, bool popup, bool investigate);
 static bool handle_unit_packet_common(struct unit *packet_unit);
-
 
 /* The dumbest of cities, placeholders for unknown and unseen cities. */
 static struct {
@@ -102,6 +115,69 @@ static struct {
   .cities = NULL,
   .placeholder = NULL
 };
+
+#ifdef HAVE_CLIENT_MYSQL
+static char *alloc_escaped_string(MYSQL *mysql, const char *orig);
+static void free_escaped_string(char *str);
+#endif /* HAVE_CLIENT_MYSQL */
+
+static void client_mysql_insert_log(char *str);
+
+/****************************************************************************
+  Connect to MySQL server JIT-style and reuse connection
+  FIXME: Reconnect if connection is lost
+****************************************************************************/
+#ifdef HAVE_CLIENT_MYSQL
+static MYSQL* client_mysql_connect() {
+	static MYSQL *mysql = NULL;
+	if(mysql != NULL) return mysql;
+	mysql_init(&mysql);
+	mysql_options(&mysql, MYSQL_READ_DEFAULT_GROUP, "freeciv_client");
+	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0) === NULL);
+}
+#endif /* HAVE_CLIENT_MYSQL */
+
+/****************************************************************************
+  Insert log row to MySQL table
+****************************************************************************/
+static void client_mysql_insert_log(char *msgfmt, ...) {
+#ifdef HAVE_CLIENT_MYSQL
+	MYSQL *mysql = client_mysql_connect();
+	char unescaped_buffer[512] = "";
+	const int unescaped_buffer_size = sizeof(unescaped_buffer_size);
+	int unescaped_size = 0;
+	char query_buffer[512] = "";
+	const int query_buffer_size = sizeof(query_buffer);
+	int query_buffer_result = 0;
+	va_list ap;
+
+	if(mysql == NULL) {
+		log_error("Connect failed for MySQL insert log failed");
+		return;
+	}
+
+	va_start(ap, msgfmt);
+	unescaped_size = vsnprintf(unescaped_buffer, unescaped_buffer_size, msgfmt, ap);
+	va_end(ap);
+
+	if(unescaped_size > -1 && unescaped_size < unescaped_buffer_size) {
+		escaped_msg_buffer = alloc_escaped_string(&mysql, unescaped_buffer);
+		if(escaped_msg_buffer != NULL) {
+			/* insert an entry into our log */
+			query_buffer_result = fc_snprintf(query_buffer, query_buffer_size, "INSERT INTO %s (created,msg) VALUES (unix_timestamp(),'%s')", CLIENT_MYSQL_LOG_TABLE, escaped_msg_buffer);
+			if (query_buffer_result < 0 || query_buffer_result >= query_buffer_size || mysql_query(mysql, query_buffer)) {
+				log_error("Insert query to MySQL failed for log table (%s)", mysql_error(mysql));
+			}
+			free_escaped_string(escaped_msg_buffer);
+			escaped_msg_buffer = NULL;
+		} else {
+			log_error("Alloc escaped string for MySQL insert log failed");
+		}
+	} else {
+		log_error("vsnprintf for MySQL insert log failed");
+	}
+#endif /* HAVE_CLIENT_MYSQL */
+}
 
 /****************************************************************************
   Called below, and by client/civclient.c client_game_free()
@@ -248,6 +324,14 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
     timeinfo = localtime ( &rawtime );
     strftime (time_str, TIME_STR_LEN, "%Y-%m-%d %H:%M:%S", timeinfo);
     fprintf(fp, "%s: %s at (%d,%d) %s HP: %d LEV: %d ID: %d\n",
+            time_str,
+            unit_rule_name(punit),
+            TILE_XY(punit->tile),
+            punit->owner->name,
+            punit->hp,
+            punit->veteran,
+            punit->id);
+    client_mysql_insert_log("%s: %s at (%d,%d) %s HP: %d LEV: %d ID: %d",
             time_str,
             unit_rule_name(punit),
             TILE_XY(punit->tile),
