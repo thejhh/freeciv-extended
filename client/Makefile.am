@@ -96,6 +96,8 @@ freeciv_client_src = $(AUDIO_SDL_FILES) \
 	messagewin_common.h \
 	overview_common.c	\
 	overview_common.h	\
+	mysql.c	\
+	mysql.h	\
 	packhand.c	\
 	packhand.h	\
 	packhand_gen.h	\
