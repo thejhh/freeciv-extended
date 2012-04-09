@@ -236,7 +236,7 @@ void fc_mysql_log_tc(int year, int turn) {
 	);
 }
 
-void fc_mysql_log_chat(const char *message, const struct tile* tile, enum event_type event, int conn_id) {
+void fc_mysql_log_chat(const char *message, const struct tile* ptile, enum event_type event, int conn_id) {
     fc_mysql_query(
 	"INSERT INTO `" FC__MYSQL_CHATLOG_TABLE "` "
 	"(created,tile_x,tile_y,message,event) "
