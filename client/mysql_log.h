@@ -19,8 +19,8 @@
 #include "events.h"		/* enum event_type */
 #include "map.h"
 
-extern void fc_mysql_log_unit(const struct unit* punit, bool removed=false);
-extern void fc_mysql_log_city(const struct city* pcity, bool removed=false);
+extern void fc_mysql_log_unit(const struct unit* punit, bool removed);
+extern void fc_mysql_log_city(const struct city* pcity, bool removed);
 extern void fc_mysql_log_nuke(const struct tile* ptile);
 
 #endif /* FC__MYSQL_LOG_H */
