@@ -172,7 +172,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 				log_error("Insert query to MySQL failed for log table (%s)", mysql_error(mysql));
 			}
 			free_escaped_string(escaped_buffer);
-			escaped_msg_buffer = NULL;
+			escaped_buffer = NULL;
 		} else {
 			log_error("Alloc escaped string for MySQL insert log failed");
 		}
