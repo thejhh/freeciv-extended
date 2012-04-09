@@ -131,23 +131,42 @@ CREATE TABLE `fc_unitlog` (
 #endif /* HAVE_CLIENT_MYSQL */
 
 /****************************************************************************
-  Connect to MySQL server JIT-style and reuse connection
-  FIXME: Reconnect if connection is lost
+  Connect to MySQL server JIT-style and reuse static connection. 
+
+  If connection was already initialized this function will ping the 
+  connection to test it's working.
+
+  Reads configurations from ~/.my.cnf from section [freeciv_client].
+
+  Note: This reconnect does not work before MySQL 5.1.6 because of bug.
 ****************************************************************************/
 #ifdef HAVE_CLIENT_MYSQL
 static MYSQL* client_mysql_connect() {
 	static bool initilized = false;
 	static MYSQL mysql;
-	if(initilized) return &mysql;
+	if(initilized) return (mysql_ping(&mysql) == 0) ? &mysql : NULL;
 	initilized = true;
 	mysql_init(&mysql);
 	mysql_options(&mysql, MYSQL_READ_DEFAULT_GROUP, "freeciv_client");
+	mysql_options(&mysql, MYSQL_OPT_RECONNECT, true);
 	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0);
 }
 #endif /* HAVE_CLIENT_MYSQL */
 
 /****************************************************************************
-  Insert log row to MySQL table
+  Execute generic MySQL query in printf style.
+
+  Format:
+    %s - Escaped string
+    %d - Integer
+    %% - A single %
+
+  TODO (not implemented):
+    %S - unescaped string
+    %f - floats
+
+  Returns nothing.
+
 ****************************************************************************/
 void fc_mysql_query(char *query_fmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
@@ -161,20 +180,8 @@ void fc_mysql_query(char *query_fmt, ...) {
 	bool error = false;
 	va_list ap;
 
-	/*
-	char buffer[512] = "";
-	const int buffer_size = sizeof(buffer);
-	char unescaped_buffer[512] = "";
-	const int unescaped_buffer_size = sizeof(unescaped_buffer);
-	int unescaped_size = 0;
-	char query_buffer[512] = "";
-	const int query_buffer_size = sizeof(query_buffer);
-	int query_buffer_result = 0;
-	char* escaped_buffer;
-	*/
-
 	if(mysql == NULL) {
-		log_error("Connect failed for MySQL insert log failed");
+		log_error("Connect failed for MySQL query log");
 		return;
 	}
 
@@ -268,7 +275,7 @@ void fc_mysql_query(char *query_fmt, ...) {
 	query_n++;
 
 	if (mysql_query(mysql, query)) {
-		log_error("Insert query to MySQL failed (%s)", mysql_error(mysql));
+		log_error("Query to MySQL failed (%s)", mysql_error(mysql));
 	}
 #endif /* HAVE_CLIENT_MYSQL */
 }
