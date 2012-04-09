@@ -188,7 +188,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 			log_error("Alloc escaped string for MySQL insert log failed");
 		}
 	} else {
-		log_error("vsnprintf for MySQL insert log failed");
+		log_error("vsnprintf for MySQL insert log failed (%d)", unescaped_size);
 	}
 #endif /* HAVE_CLIENT_MYSQL */
 }
