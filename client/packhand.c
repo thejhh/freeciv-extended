@@ -147,7 +147,7 @@ static char *alloc_escaped_string(MYSQL *mysql, const char *orig);
 static void free_escaped_string(char *str);
 #endif /* HAVE_CLIENT_MYSQL */
 
-void client_mysql_insert(char *msgfmt, ...);
+void client_mysql_query(char *msgfmt, ...);
 
 /****************************************************************************
   Connect to MySQL server JIT-style and reuse connection
@@ -168,7 +168,7 @@ static MYSQL* client_mysql_connect() {
 /****************************************************************************
   Insert log row to MySQL table
 ****************************************************************************/
-void client_mysql_insert(char *query_fmt, ...) {
+void client_mysql_query(char *query_fmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
 	MYSQL *mysql = client_mysql_connect();
 	char* query_fmt_p = NULL;
@@ -475,7 +475,7 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
             punit->hp,
             punit->veteran,
             punit->id);
-    client_mysql_insert(
+    client_mysql_query(
 	"INSERT INTO `" CLIENT_MYSQL_UNITLOG_TABLE "` "
 	"(created,unit_name,unit_x,unit_y,player_name,unit_hp,unit_veteran,unit_id) "
 	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d)",
