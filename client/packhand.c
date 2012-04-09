@@ -163,7 +163,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 	va_end(ap);
 
 	if(unescaped_size > -1 && unescaped_size < unescaped_buffer_size) {
-		escaped_msg_buffer = alloc_escaped_string(&mysql, unescaped_buffer);
+		query_buffer = alloc_escaped_string(&mysql, unescaped_buffer);
 		if(escaped_msg_buffer != NULL) {
 			/* insert an entry into our log */
 			query_buffer_result = fc_snprintf(query_buffer, query_buffer_size, "INSERT INTO %s (created,msg) VALUES (unix_timestamp(),'%s')", CLIENT_MYSQL_LOG_TABLE, escaped_msg_buffer);
