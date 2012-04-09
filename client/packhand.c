@@ -182,6 +182,37 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 #endif /* HAVE_CLIENT_MYSQL */
 }
 
+#ifdef HAVE_CLIENT_MYSQL
+/**************************************************************************
+ Creates escaped version of string.
+**************************************************************************/
+static char *alloc_escaped_string(MYSQL *mysql, const char *orig)
+{
+  int orig_len = strlen(orig);
+  char *escaped = fc_malloc(orig_len*2+1);
+
+  if (escaped == NULL) {
+    log_error("Failed to allocate memory for escaped string %s", orig);
+  } else {
+    mysql_real_escape_string(mysql, escaped, orig, orig_len);
+  }
+
+  return escaped;
+}
+
+
+/**************************************************************************
+ Frees escaped string created by alloc_escaped_string()
+**************************************************************************/
+static void free_escaped_string(char *str)
+{
+  if (str != NULL) {
+    FC_FREE(str);
+  }
+}
+#endif /* HAVE_CLIENT_MYSQL */
+
+
 /****************************************************************************
   Called below, and by client/civclient.c client_game_free()
 ****************************************************************************/
