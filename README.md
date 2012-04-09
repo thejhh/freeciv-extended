@@ -7,6 +7,9 @@ Freeciv Client
  * Shows the total production of the nation
  * Writes unit activity into MySQL and filesystem
 
+Note! The current version might contain serious buffer overflow bugs. Use at 
+your own risk! I'll audit the code once I am feeling alert again.
+
 MySQL configurations
 ====================
 
