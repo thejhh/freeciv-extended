@@ -7,6 +7,17 @@ Freeciv Client
  * Shows the total production of the nation
  * Writes unit activity into MySQL and filesystem
 
+MySQL configurations
+====================
+
+Create file ~/.my.cnf and add these lines there:
+
+	[freeciv_client]
+	user = username
+	password = yoursecretpassword
+	host = localhost
+	database = dbname
+
 Original README
 ===============
 
