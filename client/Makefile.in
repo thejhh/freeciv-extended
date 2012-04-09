@@ -97,13 +97,14 @@ am__libfcgui_ftwl_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	global_worklist.c global_worklist.h goto.c goto.h helpdata.c \
 	helpdata.h mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 am__objects_1 = audio_sdl.lo
 @AUDIO_SDL_TRUE@am__objects_2 = $(am__objects_1)
 am__objects_3 = $(am__objects_2) attribute.lo citydlg_common.lo \
@@ -112,10 +113,10 @@ am__objects_3 = $(am__objects_2) attribute.lo citydlg_common.lo \
 	colors_common.lo control.lo editor.lo ggzclient.lo \
 	global_worklist.lo goto.lo helpdata.lo mapctrl_common.lo \
 	mapview_common.lo messagewin_common.lo overview_common.lo \
-	packhand.lo packhand_gen.lo plrdlg_common.lo options.lo \
-	repodlgs_common.lo reqtree.lo servers.lo text.lo \
-	themes_common.lo tilespec.lo update_queue.lo voteinfo.lo \
-	audio.lo audio_none.lo
+	mysql.lo mysql_log.lo packhand.lo packhand_gen.lo \
+	plrdlg_common.lo options.lo repodlgs_common.lo reqtree.lo \
+	servers.lo text.lo themes_common.lo tilespec.lo \
+	update_queue.lo voteinfo.lo audio.lo audio_none.lo
 @CLIENT_GUI_FTWL_TRUE@am_libfcgui_ftwl_la_OBJECTS = $(am__objects_3)
 libfcgui_ftwl_la_OBJECTS = $(am_libfcgui_ftwl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -135,13 +136,14 @@ am__libfcgui_gtk2_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	global_worklist.c global_worklist.h goto.c goto.h helpdata.c \
 	helpdata.h mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 @CLIENT_GUI_GTK_2_0_TRUE@am_libfcgui_gtk2_la_OBJECTS =  \
 @CLIENT_GUI_GTK_2_0_TRUE@	$(am__objects_3)
 libfcgui_gtk2_la_OBJECTS = $(am_libfcgui_gtk2_la_OBJECTS)
@@ -158,13 +160,14 @@ am__libfcgui_sdl_la_SOURCES_DIST = audio_sdl.c audio_sdl.h attribute.h \
 	global_worklist.h goto.c goto.h helpdata.c helpdata.h \
 	mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 @CLIENT_GUI_SDL_TRUE@am_libfcgui_sdl_la_OBJECTS = $(am__objects_3)
 libfcgui_sdl_la_OBJECTS = $(am_libfcgui_sdl_la_OBJECTS)
 @CLIENT_GUI_SDL_TRUE@am_libfcgui_sdl_la_rpath =
@@ -181,13 +184,14 @@ am__libfcgui_stub_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	global_worklist.c global_worklist.h goto.c goto.h helpdata.c \
 	helpdata.h mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 @CLIENT_GUI_STUB_TRUE@am_libfcgui_stub_la_OBJECTS = $(am__objects_3)
 libfcgui_stub_la_OBJECTS = $(am_libfcgui_stub_la_OBJECTS)
 @CLIENT_GUI_STUB_TRUE@am_libfcgui_stub_la_rpath =
@@ -204,13 +208,14 @@ am__libfcgui_win32_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	global_worklist.c global_worklist.h goto.c goto.h helpdata.c \
 	helpdata.h mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 @CLIENT_GUI_WIN32_TRUE@am_libfcgui_win32_la_OBJECTS =  \
 @CLIENT_GUI_WIN32_TRUE@	$(am__objects_3)
 libfcgui_win32_la_OBJECTS = $(am_libfcgui_win32_la_OBJECTS)
@@ -227,13 +232,14 @@ am__libfcgui_xaw_la_SOURCES_DIST = audio_sdl.c audio_sdl.h attribute.h \
 	global_worklist.h goto.c goto.h helpdata.c helpdata.h \
 	mapctrl_common.c mapctrl_common.h mapview_common.c \
 	mapview_common.h messagewin_common.c messagewin_common.h \
-	overview_common.c overview_common.h packhand.c packhand.h \
-	packhand_gen.h packhand_gen.c plrdlg_common.c plrdlg_common.h \
-	options.c options.h repodlgs_common.c repodlgs_common.h \
-	reqtree.c reqtree.h servers.c servers.h text.c text.h \
-	themes_common.c themes_common.h tilespec.c tilespec.h \
-	update_queue.c update_queue.h voteinfo.c voteinfo.h audio.c \
-	audio.h audio_none.c audio_none.h
+	overview_common.c overview_common.h mysql.c mysql.h \
+	mysql_log.c mysql_log.h packhand.c packhand.h packhand_gen.h \
+	packhand_gen.c plrdlg_common.c plrdlg_common.h options.c \
+	options.h repodlgs_common.c repodlgs_common.h reqtree.c \
+	reqtree.h servers.c servers.h text.c text.h themes_common.c \
+	themes_common.h tilespec.c tilespec.h update_queue.c \
+	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
+	audio_none.c audio_none.h
 @CLIENT_GUI_XAW_TRUE@am_libfcgui_xaw_la_OBJECTS = $(am__objects_3)
 libfcgui_xaw_la_OBJECTS = $(am_libfcgui_xaw_la_OBJECTS)
 @CLIENT_GUI_XAW_TRUE@am_libfcgui_xaw_la_rpath =
@@ -762,6 +768,10 @@ freeciv_client_src = $(AUDIO_SDL_FILES) \
 	messagewin_common.h \
 	overview_common.c	\
 	overview_common.h	\
+	mysql.c	\
+	mysql.h	\
+	mysql_log.c	\
+	mysql_log.h	\
 	packhand.c	\
 	packhand.h	\
 	packhand_gen.h	\
@@ -1012,6 +1022,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mapctrl_common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mapview_common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/messagewin_common.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mysql.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mysql_log.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/options.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/overview_common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/packhand.Plo@am__quote@
