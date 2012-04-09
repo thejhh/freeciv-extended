@@ -99,6 +99,17 @@
 #ifdef HAVE_CLIENT_MYSQL
   #define CLIENT_MYSQL_UNIT_TABLE    "freeciv_client_unit"
   #define CLIENT_MYSQL_LOG_TABLE     "freeciv_client_log"
+
+/***********************************************************************
+
+CREATE TABLE `freeciv_client_log` (
+    id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    created          TIMESTAMP NOT NULL DEFAULT 0,
+    msg              VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY(id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
+************************************************************************/
+
 #endif /* HAVE_CLIENT_MYSQL */
 
 static void city_packet_common(struct city *pcity, struct tile *pcenter,
