@@ -157,7 +157,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
 	MYSQL *mysql = client_mysql_connect();
 	char unescaped_buffer[512] = "";
-	const int unescaped_buffer_size = sizeof(unescaped_buffer_size);
+	const int unescaped_buffer_size = sizeof(unescaped_buffer);
 	int unescaped_size = 0;
 	char query_buffer[512] = "";
 	const int query_buffer_size = sizeof(query_buffer);
