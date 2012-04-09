@@ -99,37 +99,6 @@
 
 #include "packhand.h"
 
-#ifdef HAVE_CLIENT_MYSQL
-  #define CLIENT_MYSQL_LOG_TABLE     "fc_log"
-  #define CLIENT_MYSQL_UNITLOG_TABLE "fc_unitlog"
-
-/***********************************************************************
-
-CREATE TABLE `fc_log` (
-    log_id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    created          TIMESTAMP NOT NULL DEFAULT 0,
-    x                INT UNSIGNED,
-    y                INT UNSIGNED,
-    msg              VARCHAR(255) NOT NULL DEFAULT '',
-    PRIMARY KEY(log_id)) CHARACTER SET utf8 ENGINE=InnoDB;
-
-CREATE TABLE `fc_unitlog` (
-    unitlog_id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    created          TIMESTAMP NOT NULL DEFAULT 0,
-    unit_name        VARCHAR(255),
-    unit_x           INT UNSIGNED,
-    unit_y           INT UNSIGNED,
-    player_name      VARCHAR(255),
-    unit_hp          INT UNSIGNED,
-    unit_veteran     INT UNSIGNED,
-    unit_id          INT UNSIGNED,
-    PRIMARY KEY(unitlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
-
-
-************************************************************************/
-
-#endif /* HAVE_CLIENT_MYSQL */
-
 /****************************************************************************
   Connect to MySQL server JIT-style and reuse static connection. 
 
@@ -141,7 +110,7 @@ CREATE TABLE `fc_unitlog` (
   Note: This reconnect does not work before MySQL 5.1.6 because of bug.
 ****************************************************************************/
 #ifdef HAVE_CLIENT_MYSQL
-static MYSQL* client_mysql_connect() {
+static MYSQL* fc_mysql_connect() {
 	static bool initilized = false;
 	static MYSQL mysql;
 	if(initilized) return (mysql_ping(&mysql) == 0) ? &mysql : NULL;
@@ -170,7 +139,7 @@ static MYSQL* client_mysql_connect() {
 ****************************************************************************/
 void fc_mysql_query(char *query_fmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
-	MYSQL *mysql = client_mysql_connect();
+	MYSQL *mysql = fc_mysql_connect();
 	char* query_fmt_p = NULL;
 	char query[1024] = "";
 	const int query_size = sizeof(query);

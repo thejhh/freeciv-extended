@@ -257,16 +257,7 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
             punit->hp,
             punit->veteran,
             punit->id);
-    fc_mysql_query(
-	"INSERT INTO `" CLIENT_MYSQL_UNITLOG_TABLE "` "
-	"(created,unit_name,unit_x,unit_y,player_name,unit_hp,unit_veteran,unit_id) "
-	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d)",
-            unit_rule_name(punit),
-            TILE_XY(punit->tile),
-            punit->owner->name,
-            punit->hp,
-            punit->veteran,
-            punit->id);
+    fc_mysql_log_unit(punit);
     fclose(fp);
   }
 
@@ -345,6 +336,8 @@ void handle_city_remove(int city_id)
 
   need_menus_update = (NULL != get_focus_unit_on_tile(city_tile(pcity)));
 
+  fc_mysql_log_city(pcity, true);
+
   agents_city_remove(pcity);
   editgui_notify_object_changed(OBJTYPE_CITY, pcity->id, TRUE);
   client_remove_city(pcity);
@@ -369,6 +362,8 @@ void handle_unit_remove(int unit_id)
     return;
   }
   
+  fc_mysql_log_unit(punit, true);
+
   /* Close diplomat dialog if the diplomat is lost */
   if (diplomat_handled_in_diplomat_dialog() == punit->id) {
     close_diplomat_dialog();
@@ -397,6 +392,9 @@ void handle_unit_remove(int unit_id)
 void handle_nuke_tile_info(int tile)
 {
   put_nuke_mushroom_pixmaps(index_to_tile(tile));
+
+  fc_mysql_log_nuke(index_to_tile(tile));
+
 }
 
 /****************************************************************************
@@ -426,6 +424,7 @@ void handle_unit_combat_info(int attacker_unit_id, int defender_unit_id,
   struct unit *punit1 = game_unit_by_number(defender_unit_id);
 
   if (punit0 && punit1) {
+
     if (tile_visible_mapcanvas(punit0->tile) &&
 	tile_visible_mapcanvas(punit1->tile)) {
       show_combat = TRUE;
@@ -462,6 +461,9 @@ void handle_unit_combat_info(int attacker_unit_id, int defender_unit_id,
       pwinner->veteran++;
       refresh_unit_mapcanvas(pwinner, pwinner->tile, TRUE, FALSE);
     }
+
+    fc_mysql_log_combat(punit0, punit1);
+
   }
 }
 
@@ -803,6 +805,9 @@ void handle_city_info(const struct packet_city_info *packet)
           || (city_is_new && 0 < city_num_trade_routes(pcity)))) {
     update_map_canvas_visible();
   }
+
+  fc_mysql_log_city(pcity);
+
 }
 
 /****************************************************************************
@@ -1052,6 +1057,9 @@ void handle_new_year(int year, int turn)
   }
 
   agents_new_turn();
+
+  fc_mysql_log_tc(year, turn);
+
 }
 
 /**************************************************************************
@@ -1169,6 +1177,7 @@ void handle_chat_msg(const char *message, int tile,
                      enum event_type event, int conn_id)
 {
   handle_event(message, index_to_tile(tile), event, conn_id);
+  fc_mysql_log_chat(message, index_to_tile(tile), event, conn_id);
 }
 
 /**************************************************************************
@@ -1727,6 +1736,8 @@ static bool read_player_info_techs(struct player *pplayer,
 #ifdef DEBUG
   log_verbose("Player%d inventions:%s", player_number(pplayer), inventions);
 #endif
+
+  // FIXME: fc_mysql_log_invention
 
   advance_index_iterate(A_NONE, i) {
     enum tech_state newstate = inventions[i] - '0';
@@ -2413,6 +2424,8 @@ void handle_tile_info(const struct packet_tile_info *packet)
   struct resource *presource = resource_by_number(packet->resource);
   struct terrain *pterrain = terrain_by_number(packet->terrain);
   struct tile *ptile = index_to_tile(packet->tile);
+
+  // FIXME: fc_mysql_log_tile
 
   fc_assert_ret_msg(NULL != ptile, "Invalid tile index %d.", packet->tile);
   old_known = client_tile_get_known(ptile);
