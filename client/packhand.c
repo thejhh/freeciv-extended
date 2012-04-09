@@ -24,7 +24,7 @@
 #include <time.h>
 
 #ifdef HAVE_CLIENT_MYSQL
-  #include <mysql/mysql.h>
+#include <mysql/mysql.h>
 #endif /* HAVE_CLIENT_MYSQL */
 
 /* utility */
@@ -129,8 +129,10 @@ static void client_mysql_insert_log(char *str);
 ****************************************************************************/
 #ifdef HAVE_CLIENT_MYSQL
 static MYSQL* client_mysql_connect() {
-	static MYSQL *mysql = NULL;
-	if(mysql != NULL) return mysql;
+	static bool initilized = false;
+	static MYSQL mysql;
+	if(initilized) return &mysql;
+	initilized = true;
 	mysql_init(&mysql);
 	mysql_options(&mysql, MYSQL_READ_DEFAULT_GROUP, "freeciv_client");
 	return mysql_real_connect(&mysql, NULL, NULL, NULL, NULL, 0, NULL, 0) === NULL);
