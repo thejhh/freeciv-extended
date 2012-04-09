@@ -50,7 +50,7 @@ endif
 
 SUBDIRS = $(GUI_SUBDIRS) $(CLI_INCLUDE) agents
 
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/agents $(CLIENT_CFLAGS) $(SOUND_CFLAGS) $(LIBGGZ_INCLUDES) $(GGZMOD_INCLUDES) $(GGZ_GTK_INCLUDES)
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/agents $(CLIENT_CFLAGS) $(SOUND_CFLAGS) $(LIBGGZ_INCLUDES) $(GGZMOD_INCLUDES) $(GGZ_GTK_INCLUDES) @AUTH_CFLAGS@
 
 # Build client common functionality in to library
 # instead linking them directly to civclient. This is necessary
@@ -146,7 +146,7 @@ freeciv_gtk2_LDADD = \
  $(SOUND_LIBS) \
  libfcgui-gtk2.la \
  $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_gtk2_LIBS)
 endif
 
@@ -161,7 +161,7 @@ freeciv_sdl_LDADD = \
  $(GUI_sdl_LIBS) \
  libfcgui-sdl.la \
  $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_sdl_LIBS)
 endif
 
@@ -175,7 +175,7 @@ freeciv_xaw_LDFLAGS = $(GUI_xaw_LDFLAGS) $(GGZMOD_LDFLAGS)
 freeciv_xaw_LDADD = \
  libfcgui-xaw.la \
  $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_xaw_LIBS)
 endif
 
@@ -190,7 +190,7 @@ freeciv_ftwl_LDADD = \
  libfcgui-ftwl.la \
  $(top_builddir)/common/libfreeciv.la \
  $(top_builddir)/utility/ftwl/libftwl.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_ftwl_LIBS)
 endif
 
@@ -205,7 +205,7 @@ freeciv_win32_LDADD = \
  $(SOUND_LIBS) \
  libfcgui-win32.la \
  $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_win32_LIBS)
 endif
 
@@ -219,6 +219,6 @@ freeciv_stub_LDFLAGS = $(GUI_stub_LDFLAGS) $(GGZMOD_LDFLAGS)
 freeciv_stub_LDADD = \
  libfcgui-stub.la \
  $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
  $(GUI_stub_LIBS)
 endif

@@ -255,6 +255,7 @@ am__DEPENDENCIES_1 =
 @CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1) \
+@CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1) $(CLIENTICON) \
 @CLIENT_GUI_FTWL_TRUE@	$(am__DEPENDENCIES_1)
 freeciv_ftwl_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -267,6 +268,7 @@ freeciv_gtk2_OBJECTS = $(am_freeciv_gtk2_OBJECTS)
 @CLIENT_GUI_GTK_2_0_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_GTK_2_0_TRUE@	libfcgui-gtk2.la \
 @CLIENT_GUI_GTK_2_0_TRUE@	$(top_builddir)/common/libfreeciv.la \
+@CLIENT_GUI_GTK_2_0_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_GTK_2_0_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_GTK_2_0_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_GTK_2_0_TRUE@	$(am__DEPENDENCIES_1) \
@@ -284,6 +286,7 @@ freeciv_sdl_OBJECTS = $(am_freeciv_sdl_OBJECTS)
 @CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1) \
+@CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1) $(CLIENTICON) \
 @CLIENT_GUI_SDL_TRUE@	$(am__DEPENDENCIES_1)
 freeciv_sdl_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -294,6 +297,7 @@ am__freeciv_stub_SOURCES_DIST = dummy.c
 freeciv_stub_OBJECTS = $(am_freeciv_stub_OBJECTS)
 @CLIENT_GUI_STUB_TRUE@freeciv_stub_DEPENDENCIES = libfcgui-stub.la \
 @CLIENT_GUI_STUB_TRUE@	$(top_builddir)/common/libfreeciv.la \
+@CLIENT_GUI_STUB_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_STUB_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_STUB_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_STUB_TRUE@	$(am__DEPENDENCIES_1) \
@@ -311,6 +315,7 @@ freeciv_win32_OBJECTS = $(am_freeciv_win32_OBJECTS)
 @CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1) \
+@CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1) $(CLIENTICON) \
 @CLIENT_GUI_WIN32_TRUE@	$(am__DEPENDENCIES_1)
 freeciv_win32_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -321,6 +326,7 @@ am__freeciv_xaw_SOURCES_DIST = dummy.c
 freeciv_xaw_OBJECTS = $(am_freeciv_xaw_OBJECTS)
 @CLIENT_GUI_XAW_TRUE@freeciv_xaw_DEPENDENCIES = libfcgui-xaw.la \
 @CLIENT_GUI_XAW_TRUE@	$(top_builddir)/common/libfreeciv.la \
+@CLIENT_GUI_XAW_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_XAW_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_XAW_TRUE@	$(am__DEPENDENCIES_1) \
 @CLIENT_GUI_XAW_TRUE@	$(am__DEPENDENCIES_1) \
@@ -710,7 +716,7 @@ EXTRA_DIST = $(ALL_AUDIO_SDL_FILES)
 @MAKE_CLIENT_INCLUDE_FALSE@CLI_INCLUDE = 
 @MAKE_CLIENT_INCLUDE_TRUE@CLI_INCLUDE = include
 SUBDIRS = $(GUI_SUBDIRS) $(CLI_INCLUDE) agents
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/agents $(CLIENT_CFLAGS) $(SOUND_CFLAGS) $(LIBGGZ_INCLUDES) $(GGZMOD_INCLUDES) $(GGZ_GTK_INCLUDES)
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/agents $(CLIENT_CFLAGS) $(SOUND_CFLAGS) $(LIBGGZ_INCLUDES) $(GGZMOD_INCLUDES) $(GGZ_GTK_INCLUDES) @AUTH_CFLAGS@
 
 # Build client common functionality in to library
 # instead linking them directly to civclient. This is necessary
@@ -802,7 +808,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_GTK_2_0_TRUE@ $(SOUND_LIBS) \
 @CLIENT_GUI_GTK_2_0_TRUE@ libfcgui-gtk2.la \
 @CLIENT_GUI_GTK_2_0_TRUE@ $(top_builddir)/common/libfreeciv.la \
-@CLIENT_GUI_GTK_2_0_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_GTK_2_0_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_GTK_2_0_TRUE@ $(GUI_gtk2_LIBS)
 
 @CLIENT_GUI_SDL_TRUE@libfcgui_sdl_la_SOURCES = $(freeciv_client_src)
@@ -813,7 +819,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_SDL_TRUE@ $(GUI_sdl_LIBS) \
 @CLIENT_GUI_SDL_TRUE@ libfcgui-sdl.la \
 @CLIENT_GUI_SDL_TRUE@ $(top_builddir)/common/libfreeciv.la \
-@CLIENT_GUI_SDL_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_SDL_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_SDL_TRUE@ $(GUI_sdl_LIBS)
 
 @CLIENT_GUI_XAW_TRUE@libfcgui_xaw_la_SOURCES = $(freeciv_client_src)
@@ -823,7 +829,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_XAW_TRUE@freeciv_xaw_LDADD = \
 @CLIENT_GUI_XAW_TRUE@ libfcgui-xaw.la \
 @CLIENT_GUI_XAW_TRUE@ $(top_builddir)/common/libfreeciv.la \
-@CLIENT_GUI_XAW_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_XAW_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_XAW_TRUE@ $(GUI_xaw_LIBS)
 
 @CLIENT_GUI_FTWL_TRUE@libfcgui_ftwl_la_SOURCES = $(freeciv_client_src)
@@ -834,7 +840,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_FTWL_TRUE@ libfcgui-ftwl.la \
 @CLIENT_GUI_FTWL_TRUE@ $(top_builddir)/common/libfreeciv.la \
 @CLIENT_GUI_FTWL_TRUE@ $(top_builddir)/utility/ftwl/libftwl.la \
-@CLIENT_GUI_FTWL_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_FTWL_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_FTWL_TRUE@ $(GUI_ftwl_LIBS)
 
 @CLIENT_GUI_WIN32_TRUE@libfcgui_win32_la_SOURCES = $(freeciv_client_src)
@@ -845,7 +851,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_WIN32_TRUE@ $(SOUND_LIBS) \
 @CLIENT_GUI_WIN32_TRUE@ libfcgui-win32.la \
 @CLIENT_GUI_WIN32_TRUE@ $(top_builddir)/common/libfreeciv.la \
-@CLIENT_GUI_WIN32_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_WIN32_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_WIN32_TRUE@ $(GUI_win32_LIBS)
 
 @CLIENT_GUI_STUB_TRUE@libfcgui_stub_la_SOURCES = $(freeciv_client_src)
@@ -855,7 +861,7 @@ noinst_LTLIBRARIES = $(am__append_8) $(am__append_10) $(am__append_12) \
 @CLIENT_GUI_STUB_TRUE@freeciv_stub_LDADD = \
 @CLIENT_GUI_STUB_TRUE@ libfcgui-stub.la \
 @CLIENT_GUI_STUB_TRUE@ $(top_builddir)/common/libfreeciv.la \
-@CLIENT_GUI_STUB_TRUE@ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+@CLIENT_GUI_STUB_TRUE@ $(AUTH_LIBS) $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 @CLIENT_GUI_STUB_TRUE@ $(GUI_stub_LIBS)
 
 all: all-recursive
