@@ -89,6 +89,7 @@
 #include "voteinfo.h"
 #include "packhand.h"
 
+#include "mysql.h"
 #include "mysql_log.h"
 
 #define FC__MYSQL_LOG_TABLE     "fc_log"
