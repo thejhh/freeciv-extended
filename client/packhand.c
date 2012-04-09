@@ -174,7 +174,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 	unescaped_size = vsnprintf(unescaped_buffer, unescaped_buffer_size, msgfmt, ap);
 	va_end(ap);
 
-	if(unescaped_size > -1 && unescaped_size < unescaped_buffer_size) {
+	if( (unescaped_size > -1) && (unescaped_size < unescaped_buffer_size) ) {
 		escaped_buffer = alloc_escaped_string(mysql, unescaped_buffer);
 		if(escaped_buffer != NULL) {
 			/* insert an entry into our log */
@@ -185,10 +185,10 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 			free_escaped_string(escaped_buffer);
 			escaped_buffer = NULL;
 		} else {
-			log_error("Alloc escaped string for MySQL insert log failed");
+			log_error("MySQL insert log failed at alloc escaped string");
 		}
 	} else {
-		log_error("vsnprintf for MySQL insert log failed (%d)", unescaped_size);
+		log_error("MySQL insert log failed at vsnprintf (%d/%d)", unescaped_size, unescaped_buffer_size);
 	}
 #endif /* HAVE_CLIENT_MYSQL */
 }
