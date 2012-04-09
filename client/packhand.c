@@ -173,8 +173,6 @@ void client_mysql_insert(char *query_fmt, ...) {
 	char* query_fmt_p = NULL;
 	char query[1024] = "";
 	const int query_size = sizeof(query);
-	char buffer[512] = "";
-	const int buffer_size = sizeof(buffer);
 	char* query_p = NULL;
 	int query_n = 0;
 	int buffer_result = 0;
@@ -182,6 +180,8 @@ void client_mysql_insert(char *query_fmt, ...) {
 	va_list ap;
 
 	/*
+	char buffer[512] = "";
+	const int buffer_size = sizeof(buffer);
 	char unescaped_buffer[512] = "";
 	const int unescaped_buffer_size = sizeof(unescaped_buffer);
 	int unescaped_size = 0;
