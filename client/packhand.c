@@ -152,6 +152,7 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 	const int query_buffer_size = sizeof(query_buffer);
 	int query_buffer_result = 0;
 	va_list ap;
+	char* escaped_buffer;
 
 	if(mysql == NULL) {
 		log_error("Connect failed for MySQL insert log failed");
@@ -163,14 +164,14 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 	va_end(ap);
 
 	if(unescaped_size > -1 && unescaped_size < unescaped_buffer_size) {
-		query_buffer = alloc_escaped_string(mysql, unescaped_buffer);
-		if(escaped_msg_buffer != NULL) {
+		escaped_buffer = alloc_escaped_string(mysql, unescaped_buffer);
+		if(escaped_buffer != NULL) {
 			/* insert an entry into our log */
-			query_buffer_result = fc_snprintf(query_buffer, query_buffer_size, "INSERT INTO %s (created,msg) VALUES (unix_timestamp(),'%s')", CLIENT_MYSQL_LOG_TABLE, escaped_msg_buffer);
+			query_buffer_result = fc_snprintf(query_buffer, query_buffer_size, "INSERT INTO %s (created,msg) VALUES (unix_timestamp(),'%s')", CLIENT_MYSQL_LOG_TABLE, escaped_buffer);
 			if (query_buffer_result < 0 || query_buffer_result >= query_buffer_size || mysql_query(mysql, query_buffer)) {
 				log_error("Insert query to MySQL failed for log table (%s)", mysql_error(mysql));
 			}
-			free_escaped_string(escaped_msg_buffer);
+			free_escaped_string(escaped_buffer);
 			escaped_msg_buffer = NULL;
 		} else {
 			log_error("Alloc escaped string for MySQL insert log failed");
