@@ -97,16 +97,30 @@
 #include "packhand.h"
 
 #ifdef HAVE_CLIENT_MYSQL
-  #define CLIENT_MYSQL_UNIT_TABLE    "freeciv_client_unit"
   #define CLIENT_MYSQL_LOG_TABLE     "freeciv_client_log"
+  #define CLIENT_MYSQL_UNITLOG_TABLE "freeciv_client_log"
 
 /***********************************************************************
 
 CREATE TABLE `freeciv_client_log` (
-    id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    log_id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     created          TIMESTAMP NOT NULL DEFAULT 0,
+    x                INT UNSIGNED,
+    y                INT UNSIGNED,
     msg              VARCHAR(255) NOT NULL DEFAULT '',
-    PRIMARY KEY(id)) CHARACTER SET utf8 ENGINE=InnoDB;
+    PRIMARY KEY(log_id)) CHARACTER SET utf8 ENGINE=InnoDB;
+
+CREATE TABLE `freeciv_client_unitlog` (
+    unitlog_id               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    created          TIMESTAMP NOT NULL DEFAULT 0,
+    x                INT UNSIGNED,
+    y                INT UNSIGNED,
+    type             VARCHAR(255),
+    nation           VARCHAR(255),
+    hp               INT UNSIGNED,
+    lev              INT UNSIGNED,
+    unit_id          INT UNSIGNED,
+    PRIMARY KEY(unitlog_id)) CHARACTER SET utf8 ENGINE=InnoDB;
 
 ************************************************************************/
 
@@ -132,7 +146,7 @@ static char *alloc_escaped_string(MYSQL *mysql, const char *orig);
 static void free_escaped_string(char *str);
 #endif /* HAVE_CLIENT_MYSQL */
 
-void client_mysql_insert_log(char *msgfmt, ...);
+void client_mysql_insert(char *msgfmt, ...);
 
 /****************************************************************************
   Connect to MySQL server JIT-style and reuse connection
@@ -153,9 +167,20 @@ static MYSQL* client_mysql_connect() {
 /****************************************************************************
   Insert log row to MySQL table
 ****************************************************************************/
-void client_mysql_insert_log(char *msgfmt, ...) {
+void client_mysql_insert(char *query_fmt, ...) {
 #ifdef HAVE_CLIENT_MYSQL
 	MYSQL *mysql = client_mysql_connect();
+	char query_fmt_p = NULL;
+	char query[1024] = "";
+	const int query_size = sizeof(query);
+	char buffer[512] = "";
+	const int buffer_size = sizeof(buffer);
+	char query_p = NULL;
+	int query_n = 0;
+	int buffer_result = 0;
+	bool error = false;
+
+	/*
 	char unescaped_buffer[512] = "";
 	const int unescaped_buffer_size = sizeof(unescaped_buffer);
 	int unescaped_size = 0;
@@ -164,31 +189,104 @@ void client_mysql_insert_log(char *msgfmt, ...) {
 	int query_buffer_result = 0;
 	va_list ap;
 	char* escaped_buffer;
+	*/
 
 	if(mysql == NULL) {
 		log_error("Connect failed for MySQL insert log failed");
 		return;
 	}
 
-	va_start(ap, msgfmt);
-	unescaped_size = vsnprintf(unescaped_buffer, unescaped_buffer_size, msgfmt, ap);
+	va_start(ap, query_fmt);
+	query_p = query;
+	query_fmt_p = query_fmt;
+	while( (*query_fmt_p != 0) && (query_n < query_size) ) {
+
+		// If part of static query...
+		if(*query_fmt_p != '%') {
+			*query_p = *query_fmt_p;
+			query_fmt_p++;
+			query_p++;
+			query_n++;
+			continue;
+		}
+
+		// ...or placeholder for variable
+		query_fmt_p++;
+		if(*query_fmt_p == 0) {
+			break;
+		}
+
+		// digit
+		if( (*query_fmt_p == 'd') && (query_size-query_n >= 0) ) {
+			int digit = va_arg( ap, int );
+			buffer_result = fc_snprintf(query_p, query_size-query_n, "%d", digit);
+			if( (buffer_result > 0) && (buffer_result < query_size-query_n) ) {
+				query_p += buffer_result;
+				query_n += buffer_result;
+			}
+			query_fmt_p++;
+			continue;
+		}
+
+		// string
+		if(*query_fmt_p == 's') {
+			char* str = va_arg( ap, char* );
+			int str_len = strlen(str);
+			unsigned long res = 0;
+
+			if(query_size-query_n < str_len*2+1+2) {
+				log_error("No enough memory to escape MySQL query param (%d/%d)", query_size-query_n, str_len*2+1+2);
+				error = true;
+				break;
+			}
+
+			*query_p = "'";
+			query_p++;
+			query_n++;
+
+			res = mysql_real_escape_string(mysql, query_p, str, str_len);
+			if( res > 0 ) {
+				query_p += res;
+				query_n += res;
+			}
+
+			*query_p = "'";
+			query_p++;
+			query_n++;
+
+			query_fmt_p++;
+			continue;
+		}
+
+		// Escaped placeholder
+		if(*query_fmt_p == '%') {
+			*query_p = '%';
+			query_p++;
+			query_n++;
+			query_fmt_p++;
+			continue;
+		}
+
+		// unknown type
+		*query_p = '%';
+		query_p++;
+		query_n++;
+	}
 	va_end(ap);
 
-	if( (unescaped_size > -1) && (unescaped_size < unescaped_buffer_size) ) {
-		escaped_buffer = alloc_escaped_string(mysql, unescaped_buffer);
-		if(escaped_buffer != NULL) {
-			/* insert an entry into our log */
-			query_buffer_result = fc_snprintf(query_buffer, query_buffer_size, "INSERT INTO %s (created,msg) VALUES (unix_timestamp(),'%s')", CLIENT_MYSQL_LOG_TABLE, escaped_buffer);
-			if (query_buffer_result < 0 || query_buffer_result >= query_buffer_size || mysql_query(mysql, query_buffer)) {
-				log_error("Insert query to MySQL failed for log table (%s)", mysql_error(mysql));
-			}
-			free_escaped_string(escaped_buffer);
-			escaped_buffer = NULL;
-		} else {
-			log_error("MySQL insert log failed at alloc escaped string");
-		}
-	} else {
-		log_error("MySQL insert log failed at vsnprintf (%d/%d)", unescaped_size, unescaped_buffer_size);
+	if(error) return;
+
+	if(query_n >= query_size) {
+		log_error("No enough memory to prepare MySQL query (%d/%d)", query_n, query_size);
+		return;
+	}
+
+	*query_p = 0;
+	query_p++;
+	query_n++;
+
+	if (mysql_query(mysql, query)) {
+		log_error("Insert query to MySQL failed (%s)", mysql_error(mysql));
 	}
 #endif /* HAVE_CLIENT_MYSQL */
 }
@@ -376,10 +474,13 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
             punit->hp,
             punit->veteran,
             punit->id);
-    client_mysql_insert_log("%s: %s at (%d,%d) %s HP: %d LEV: %d ID: %d",
-            time_str,
+    client_mysql_insert(
+	"INSERT INTO `" CLIENT_MYSQL_UNITLOG_TABLE "` "
+	"(created,unit_rule_name,x,y,owner_id,owner_name,hp,veteran,unit_id) "
+	"VALUES (unix_timestamp(),%s,%d,%d,%d,%s,%d,%d,%d)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
+            punit->owner->id,
             punit->owner->name,
             punit->hp,
             punit->veteran,
