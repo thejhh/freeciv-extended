@@ -478,7 +478,7 @@ unpackage_short_unit(const struct packet_unit_short_info *packet)
     client_mysql_insert(
 	"INSERT INTO `" CLIENT_MYSQL_UNITLOG_TABLE "` "
 	"(created,unit_name,unit_x,unit_y,player_name,unit_hp,unit_veteran,unit_id) "
-	"VALUES (unix_timestamp(),%s,%d,%d,%s,%d,%d,%d)",
+	"VALUES (NOW(),%s,%d,%d,%s,%d,%d,%d)",
             unit_rule_name(punit),
             TILE_XY(punit->tile),
             punit->owner->name,
