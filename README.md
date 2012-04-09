@@ -3,9 +3,8 @@ Freeciv 2.3.2 -- with enhanced features
 
 This is an enhanced version of Freeciv 2.3.2 with some special improvements:
 
-Freeciv Client
-* Shows the total production of the nation
-* Writes unit activity into MySQL and filesystem
+*  Client shows the total production of the nation
+*  Client writes unit activity into MySQL table aswell as to file freeciv-live-unit.log
 
 Note! The current version might contain serious buffer overflow bugs. Use at 
 your own risk! I'll audit the code once I am feeling alert again.
